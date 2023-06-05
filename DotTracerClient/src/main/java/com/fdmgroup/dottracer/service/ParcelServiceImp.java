@@ -10,7 +10,7 @@ import com.fdmgroup.dottracer.repository.ParcelRepository;
 @Service
 public class ParcelServiceImp implements ParcelService {
 
-	ParcelRepository parcelRepository;
+	private ParcelRepository parcelRepository;
 
 	public ParcelServiceImp(ParcelRepository parcelRepository) {
 		this.parcelRepository = parcelRepository;
