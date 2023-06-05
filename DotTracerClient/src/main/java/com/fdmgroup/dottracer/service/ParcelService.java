@@ -13,7 +13,7 @@ public interface ParcelService {
 
 	public Optional<Parcel> findById(Long id);
 
-	public Optional<Parcel> updateParcel(Parcel parcel);
+	public Parcel updateParcel(Parcel parcel);
 
 	public void removeParcelById(Long id);
 }
