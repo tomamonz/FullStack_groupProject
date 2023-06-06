@@ -2,16 +2,14 @@ package com.fdmgroup.dottracer.model;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "dottracer_user")
+@Table(name = "dottracer")
 
 public class ParcelHistory {
 
@@ -39,8 +37,10 @@ public class ParcelHistory {
 	@NotBlank
 	private String location;
 
-	@Column
-	@Temporal(TemporalType.DATE)
 	private LocalDate arrivalDate;
 
+	@PrePersist
+	private void init() {
+		this.arrivalDate = LocalDate.now();
+	}
 }
