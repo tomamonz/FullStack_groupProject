@@ -4,8 +4,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -187,4 +189,61 @@ class ParcelControllerTest {
 
 		verify(mockParcelService).findById(123L);
 	}
+
+	@Test
+	@DisplayName("update parcel")
+	void arrangeParcel_actUpdateParcel_assertReturnUpdatedParcel() throws Exception {
+
+		// arrange
+		BDDMockito.given(mockParcelService.findById(parcel.getId())).willReturn(Optional.of(parcel));
+		BDDMockito.given(mockParcelService.updateParcel(ArgumentMatchers.any(Parcel.class)))
+				.willAnswer((invocation) -> invocation.getArgument(0));
+
+		// act
+		ResultActions response = mockMvc.perform(put("/api/v1/parcels").contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(parcel)));
+
+		// assert
+
+		/// @formatter:off
+		response.andExpect(status()
+				.isOk());
+				//.andExpect(jsonPath("$.senderId", is("abc123")));
+		// @formatter:on
+
+		verify(mockParcelService).updateParcel(ArgumentMatchers.any(Parcel.class));
+	}
+
+	@Test
+	@DisplayName("remove parcel by id")
+	void arrangeId_actRemoveParcelById_assertReturnStatusOK() throws Exception {
+
+		// arrange
+		long id = 123;
+		BDDMockito.given(mockParcelService.findById(123L)).willReturn(Optional.of(parcel));
+		BDDMockito.willDoNothing().given(mockParcelService).removeParcelById(id);
+
+		// act
+		ResultActions response = mockMvc.perform(delete("/api/v1/parcels/{id}", id));
+
+		// assert
+		response.andExpect(status().isOk());
+	}
+
+	@Test
+	@DisplayName("remove parcel by invalid id")
+	void arrangeInvalidId_actRemoveParcelById_assertReturnStatusNotFound() throws Exception {
+
+		// arrange
+		long id = 123;
+		BDDMockito.given(mockParcelService.findById(123L)).willReturn(Optional.empty());
+		BDDMockito.willDoNothing().given(mockParcelService).removeParcelById(id);
+
+		// act
+		ResultActions response = mockMvc.perform(delete("/api/v1/parcels/{id}", id));
+
+		// assert
+		response.andExpect(status().isNotFound());
+	}
+
 }
