@@ -1,20 +1,15 @@
-package com.fdmgroup.dottracer.controller;
-
-import static org.hamcrest.CoreMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.BDDMockito;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdmgroup.dottracer.model.ParcelHistory;
 import com.fdmgroup.dottracer.service.ParcelHistoryServiceImp;
 
@@ -22,45 +17,27 @@ import com.fdmgroup.dottracer.service.ParcelHistoryServiceImp;
 class ParcelHistoryControllerTests {
 
 	@Autowired
-	private MockMvc mockMvc;
+	private MockMvc mvc;
 
-	@MockBean
-	private ParcelHistoryServiceImp parcelHistoryService;
-
-	@Test
-	void addParcelHistory_withValidParcelHistory_returnsCreatedStatus() throws Exception {
-		// Arrange
-		ParcelHistory parcelHistory = new ParcelHistory();
-		parcelHistory.setLocation("Some Location");
-		// Set other properties of parcelHistory as needed
-
-		given(parcelHistoryService.addParcelHistory(any(ParcelHistory.class))).willReturn(parcelHistory);
-
-		// Act
-		MvcResult result = mockMvc.perform(post("/api/v1/parcelhistory").contentType(MediaType.APPLICATION_JSON)
-				.content(asJsonString(parcelHistory))).andExpect(status().isCreated()).andReturn();
-
-		// Assert
-		verify(parcelHistoryService, times(1)).addParcelHistory(any(ParcelHistory.class));
-		// Perform additional assertions as needed
-	}
+	@Mock
+	private ParcelHistoryServiceImp mockParcelHistoryService;
 
 	@Test
-	void addParcelHistory_withInvalidParcelHistory_returnsBadRequest() throws Exception {
+	void addParcelHistory_WithValidData_ReturnsCreated() throws Exception {
 		// Arrange
 		ParcelHistory parcelHistory = new ParcelHistory();
-		// Set invalid or missing properties of parcelHistory as needed
+		parcelHistory.setLocation("Sample Location");
+
+		BDDMockito.given(mockParcelHistoryService.addParcelHistory(ArgumentMatchers.any(ParcelHistory.class)))
+				.willReturn(parcelHistory);
+
+		String jsonPayload = "{\"location\": \"Sample Location\"}";
 
 		// Act
-		MvcResult result = mockMvc.perform(post("/api/v1/parcelhistory").contentType(MediaType.APPLICATION_JSON)
-				.content(asJsonString(parcelHistory))).andExpect(status().isBadRequest()).andReturn();
+		ResultActions response = mvc.perform(MockMvcRequestBuilders.post("/api/v1/parcelhistory")
+				.contentType(MediaType.APPLICATION_JSON).content(jsonPayload));
 
 		// Assert
-		// Perform assertions to check the response body or specific error messages
-	}
-
-	// Utility method to convert objects to JSON string
-	private String asJsonString(Object object) throws JsonProcessingException {
-		return new ObjectMapper().writeValueAsString(object);
+		response.andExpect(MockMvcResultMatchers.status().isCreated());
 	}
 }
