@@ -30,10 +30,7 @@ class UserServiceImpTests {
 
 	@BeforeEach
 	public void setup() {
-		user = new User();
-		user.setEmail("jd@msn.com");
-		user.setPassword("abc1234");
-		user.setRole(Role.SENDER);
+		user = User.builder().password("abc1234").email("jd@msn.com").role(Role.SENDER).build();
 	}
 
 	@Test
@@ -60,6 +57,8 @@ class UserServiceImpTests {
 		Optional<User> actual = userServiceImp.findByEmailAndPassword("jd@msn.com", "abc1234");
 		
 		//assert
+		assertThat(actual).isEqualTo(Optional.ofNullable(user));
+		verify(mockUserRepository).findByEmailAndPassword("jd@msn.com", "abc1234");
 		
 	}
 
