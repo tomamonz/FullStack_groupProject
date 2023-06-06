@@ -8,11 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fdmgroup.dottracer.model.ParcelHistory;
 import com.fdmgroup.dottracer.service.ParcelHistoryServiceImp;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/parcelhistory")
@@ -21,7 +24,8 @@ public class ParcelHistoryController {
 	private ParcelHistoryServiceImp parcelHistoryService;
 
 	@PostMapping
-	public ResponseEntity<?> addParcelHistory(ParcelHistory parcelHistory, BindingResult bindingResult) {
+	public ResponseEntity<?> addParcelHistory(@Valid @RequestBody ParcelHistory parcelHistory,
+			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			Map<String, String> errors = new HashMap<>();
 
@@ -34,4 +38,10 @@ public class ParcelHistoryController {
 		return new ResponseEntity<>(this.parcelHistoryService.addParcelHistory(parcelHistory), HttpStatus.CREATED);
 
 	}
+
+	public ParcelHistoryController(ParcelHistoryServiceImp parcelHistoryService) {
+		super();
+		this.parcelHistoryService = parcelHistoryService;
+	}
+
 }
