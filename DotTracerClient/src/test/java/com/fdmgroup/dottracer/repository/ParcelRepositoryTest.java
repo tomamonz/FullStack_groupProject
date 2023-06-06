@@ -28,13 +28,14 @@ class ParcelRepositoryTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		parcel = Parcel.builder().parcelNumber(12345L).senderId(UUID.randomUUID().toString().replaceAll("-", ""))
-				.status(Status.SUBMITTED).build();
+		parcel = Parcel.builder().senderId("12345").status(Status.SUBMITTED).build();
+
 	}
 
 	@Test
 	@DisplayName("save parcel")
 	void arrangeParcel_actSave_assertCheckParcelInDatabase() {
+
 		// arrange
 
 		// act
@@ -42,7 +43,7 @@ class ParcelRepositoryTest {
 
 		// assert
 		assertThat(repo.count()).isEqualTo(1);
-		assertThat(repo.findById(actual.getId()).get().getParcelNumber()).isEqualTo(12345L);
+		assertThat(repo.findById(actual.getId()).get().getSenderId()).isEqualTo(parcel.getSenderId());
 	}
 
 	@Test
@@ -50,8 +51,9 @@ class ParcelRepositoryTest {
 	void arrangeParcel_actFindAll_assertCheckParcelInDatabase() {
 
 		// arrange
-		Parcel parcel2 = Parcel.builder().parcelNumber(23456L)
-				.senderId(UUID.randomUUID().toString().replaceAll("-", "")).status(Status.SUBMITTED).build();
+		Parcel parcel2 = Parcel.builder().parcelNumber(UUID.randomUUID().toString().replaceAll("-", ""))
+				.senderId("23456").status(Status.SUBMITTED).build();
+
 		List<Parcel> parcels = List.of(parcel, parcel2);
 		repo.saveAll(parcels);
 
@@ -60,7 +62,8 @@ class ParcelRepositoryTest {
 
 		// assert
 		assertThat(repo.count()).isEqualTo(2);
-		assertThat(actual.get(1).getParcelNumber()).isEqualTo(23456L);
+		assertThat(actual.get(0).getSenderId()).isEqualTo(parcel.getSenderId());
+		assertThat(actual.get(1).getSenderId()).isEqualTo(parcel2.getSenderId());
 
 	}
 
@@ -69,13 +72,13 @@ class ParcelRepositoryTest {
 	void arrangeSaveParcel_actFindByNumber_assertParcelFound() {
 
 		// arrange
-		repo.save(parcel);
+		Parcel original = repo.save(parcel);
 
 		// act
-		Optional<Parcel> actual = repo.findByParcelNumber(12345L);
+		Optional<Parcel> actual = repo.findByParcelNumber(original.getParcelNumber());
 
 		// assert
-		assertThat(actual.get().getParcelNumber()).isEqualTo(12345L);
+		assertThat(actual.get().getSenderId()).isEqualTo(parcel.getSenderId());
 
 	}
 

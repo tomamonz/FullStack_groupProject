@@ -17,7 +17,7 @@ public class ParcelServiceImp implements ParcelService {
 	}
 
 	@Override
-	public Optional<Parcel> findByParcelNumber(Long parcelNumber) {
+	public Optional<Parcel> findByParcelNumber(String parcelNumber) {
 		return parcelRepository.findByParcelNumber(parcelNumber);
 	}
 

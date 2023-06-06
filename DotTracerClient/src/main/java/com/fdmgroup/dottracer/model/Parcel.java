@@ -2,6 +2,7 @@ package com.fdmgroup.dottracer.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -37,9 +39,8 @@ public class Parcel {
 	@Column(name = "sender_id")
 	private String senderId;
 
-	@GeneratedValue
 	@Column(name = "packageNum")
-	private Long parcelNumber;
+	private String parcelNumber;
 
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
@@ -48,9 +49,9 @@ public class Parcel {
 	@OneToMany(mappedBy = "parcel", cascade = CascadeType.ALL)
 	private List<ParcelHistory> history = new ArrayList<>();
 
-	public void addParcelHistoryEntry(ParcelHistory parcelHistory) {
-		parcelHistory.setParcel(this);
-
-		this.history.add(parcelHistory);
+	@PrePersist
+	private void init() {
+		this.parcelNumber = UUID.randomUUID().toString().replaceAll("-", "");
+		this.status = Status.SUBMITTED;
 	}
 }

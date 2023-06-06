@@ -9,5 +9,5 @@ import com.fdmgroup.dottracer.model.Parcel;
 
 public interface ParcelRepository extends CrudRepository<Parcel, Long> {
 
-	public Optional<Parcel> findByParcelNumber(@Param("parcelNumber") Long parcelNumber);
+	public Optional<Parcel> findByParcelNumber(@Param("parcelNumber") String parcelNumber);
 }

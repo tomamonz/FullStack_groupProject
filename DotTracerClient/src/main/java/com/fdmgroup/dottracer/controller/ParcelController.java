@@ -13,20 +13,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fdmgroup.dottracer.model.Parcel;
-import com.fdmgroup.dottracer.service.ParcelServiceImp;
+import com.fdmgroup.dottracer.service.ParcelService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/parcels")
 public class ParcelController {
 
-	private ParcelServiceImp parcelService;
+	private ParcelService parcelService;
+
+	public ParcelController(ParcelService parcelService) {
+		this.parcelService = parcelService;
+	}
 
 	@GetMapping("/number/{parcelNumber}")
-	public ResponseEntity<?> findByParcelNumber(@PathVariable Long parcelNumber) {
+	public ResponseEntity<?> findByParcelNumber(@PathVariable String parcelNumber) {
 		Optional<Parcel> parcel = this.parcelService.findByParcelNumber(parcelNumber);
 
 		if (parcel.isEmpty()) {
@@ -37,7 +44,7 @@ public class ParcelController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> addParcel(Parcel parcel, BindingResult bindingResult) {
+	public ResponseEntity<?> addParcel(@Valid @RequestBody Parcel parcel, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			Map<String, String> errors = new HashMap<>();
 

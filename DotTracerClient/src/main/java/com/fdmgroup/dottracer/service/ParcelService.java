@@ -5,7 +5,7 @@ import java.util.Optional;
 import com.fdmgroup.dottracer.model.Parcel;
 
 public interface ParcelService {
-	public Optional<Parcel> findByParcelNumber(Long parcelNumber);
+	public Optional<Parcel> findByParcelNumber(String parcelNumber);
 
 	public Parcel addParcel(Parcel parcel);
 
