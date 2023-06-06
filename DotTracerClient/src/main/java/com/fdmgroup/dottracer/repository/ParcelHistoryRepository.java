@@ -1,5 +1,9 @@
 package com.fdmgroup.dottracer.repository;
 
-public interface ParcelHistoryRepository {
+import org.springframework.data.repository.CrudRepository;
+
+import com.fdmgroup.dottracer.model.ParcelHistory;
+
+public interface ParcelHistoryRepository extends CrudRepository<ParcelHistory, Long> {
 
 }
