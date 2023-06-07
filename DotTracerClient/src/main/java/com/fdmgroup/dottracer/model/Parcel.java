@@ -1,7 +1,5 @@
 package com.fdmgroup.dottracer.model;
 
-import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,6 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Entity
 @Table(name = "parcel")
@@ -44,7 +43,7 @@ public class Parcel {
 
 	@PrePersist
 	private void init() {
-		this.parcelNumber = UUID.randomUUID().toString().replaceAll("-", "");
+		this.parcelNumber = String.format("%016d", ThreadLocalRandom.current().nextLong(1_000_000_000_000_000L));
 		this.status = Status.SUBMITTED;
 	}
 }
