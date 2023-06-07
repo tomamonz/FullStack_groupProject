@@ -1,11 +1,11 @@
 import React from "react";
 
-const ButtonAtom = ({ type, text, className }) => {
+const SearchButtonAtom = ({ type, className, text }) => {
   return (
-    <button className={className} type={type}>
+    <button type={type} className={className}>
       {text}
     </button>
   );
 };
 
-export default ButtonAtom;
+export default SearchButtonAtom;

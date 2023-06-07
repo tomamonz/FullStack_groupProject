@@ -1,13 +1,7 @@
 import React from "react";
-import SearchFormMolecule from "../molecules/SearchFormMolecule";
 import LinksMolecule from "../molecules/LinksMolecule";
 
 const CollapseNavBarOrganism = ({
-  buttonType,
-  type,
-  placeholder,
-  text,
-  nameClass,
   text1,
   text2,
   text3,

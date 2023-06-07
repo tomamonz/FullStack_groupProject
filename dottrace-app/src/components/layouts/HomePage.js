@@ -7,6 +7,7 @@ class HomePage extends Component {
     parcelNumber: "",
     parcelData: null,
     error: null,
+    history: [],
   };
 
   handleInputChange = (e) => {
@@ -17,7 +18,9 @@ class HomePage extends Component {
     e.preventDefault();
 
     axios
-      .get(`/api/v1/parcels/number/${this.state.parcelNumber}`)
+      .get(
+        `http://localhost:7312/api/gateway/parcels/number/${this.state.parcelNumber}`
+      )
       .then((response) => {
         this.setState({ parcelData: response.data, error: null });
       })
@@ -27,6 +30,7 @@ class HomePage extends Component {
   };
 
   render() {
+    const { parcelNumber, history } = this.state;
     return (
       <div className="container ">
         <div className="row">
@@ -40,9 +44,9 @@ class HomePage extends Component {
               buttonType="submit"
               nameClass="btn btn-outline-success"
               type="search"
-              placeholder="Type tracking number"
+              placeholder="Enter tracking number"
               text="Search"
-              value={this.state.parcelNumber}
+              value={parcelNumber}
               onChange={this.handleInputChange}
               onSubmit={this.handleSearch}
             />
@@ -51,25 +55,20 @@ class HomePage extends Component {
         {this.state.parcelData && (
           <div className="row">
             <div className="col d-flex justify-content-center">
-              <table>
-                {/* Assuming parcelData is an array of objects with key-value pairs */}
-                <thead>
-                  <tr>
-                    {Object.keys(this.state.parcelData[0]).map((key) => (
-                      <th key={key}>{key}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.parcelData.map((row, index) => (
-                    <tr key={index}>
-                      {Object.values(row).map((value, i) => (
-                        <td key={i}>{value}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div className="card">
+                <div className="card-header">Parcel Details</div>
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item">
+                    Sender ID: {this.state.parcelData.senderId}
+                  </li>
+                  <li className="list-group-item">
+                    Parcel Number: {this.state.parcelData.parcelNumber}
+                  </li>
+                  <li className="list-group-item">
+                    Status: {this.state.parcelData.status}
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         )}

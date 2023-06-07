@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FormInputOrganism from "../organisms/FormInputOrganism";
 import ButtonAtom from "../atoms/SearchButtonAtom";
+import axios from "axios";
 
 class RegistrationPage extends Component {
   state = {
@@ -17,7 +18,7 @@ class RegistrationPage extends Component {
   onHandleSubmit = (e) => {
     e.preventDefault();
 
-    const { email, password, role } = this.state;
+    const { email, password } = this.state;
 
     if (email === "") {
       this.setState({ errors: { email: "Email is a required field." } });
@@ -32,10 +33,17 @@ class RegistrationPage extends Component {
     const newUser = {
       email,
       password,
-      role,
+      role: "SENDER",
     };
 
-    this.setState({ password: "", email: "", errors: {} });
+    axios
+      .post("http://localhost:7312/api/gateway/users", newUser)
+      .then((response) => {
+        console.log("New user created:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error creating user:", error);
+      });
   };
 
   render() {
@@ -59,14 +67,14 @@ class RegistrationPage extends Component {
             <FormInputOrganism
               label="Password"
               name="password"
-              type="text"
+              type="password"
               placeholder="Please create password, min 6 characters long"
               value={password}
               onChange={this.onHandleChange}
               error={errors.password}
             />
             <ButtonAtom
-              type="button"
+              type="submit"
               text="Register"
               className="btn btn-outline-success"
               className2="btn btn-outline-success"

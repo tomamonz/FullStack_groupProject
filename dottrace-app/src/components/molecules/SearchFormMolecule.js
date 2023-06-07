@@ -8,10 +8,18 @@ const SearchFormMolecule = ({
   placeholder,
   text,
   nameClass,
+  value,
+  onChange,
+  onSubmit,
 }) => {
   return (
-    <form className="searchform d-flex ">
-      <InputSearchAtom type={type} placeholder={placeholder} />
+    <form className="searchform d-flex " onSubmit={onSubmit}>
+      <InputSearchAtom
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
       <SearchButtonAtom type={buttonType} className={nameClass} text={text} />
     </form>
   );

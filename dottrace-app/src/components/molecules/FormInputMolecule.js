@@ -12,7 +12,7 @@ const FormInputMolecule = ({
   error,
 }) => {
   return (
-    <div className="mb-3">
+    <div className="mb-3 ">
       <LabelAtom name={name} label={label} />
       <InputAtom
         name={name}
