@@ -7,19 +7,30 @@ import HomePage from "./components/layouts/HomePage";
 import RegistrationPage from "./components/layouts/RegistrationPage";
 import LoginPage from "./components/layouts/LoginPage";
 import AddPackage from "./components/layouts/AddPackage";
+import AdminPage from "./components/layouts/AdminPage";
+import UserContext from "./components/UserObject";
+import React, { useState } from "react";
 
 function App() {
+  const [user, setUser] = useState(null);
   return (
     <Router>
-      <div className="App">
-        <Header brand="Dot Trace" className="HEADER" />
-        <Routes>
-          <Route exact path="/" element={<HomePage />} />
-          <Route exact path="/register" element={<RegistrationPage />} />
-          <Route exact path="/sendparcel" element={<LoginPage />} />
-          <Route exact path="/sendparcel/addpackage" element={<AddPackage />} />
-        </Routes>
-      </div>
+      <UserContext.Provider value={{ user, setUser }}>
+        <div className="App">
+          <Header brand="Dot Trace" className="HEADER" />
+          <Routes>
+            <Route exact path="/" element={<HomePage />} />
+            <Route exact path="/register" element={<RegistrationPage />} />
+            <Route exact path="/sendparcel" element={<LoginPage />} />
+            <Route
+              exact
+              path="/sendparcel/addpackage"
+              element={<AddPackage />}
+            />
+            <Route exact path="/admin" element={<AdminPage />} />
+          </Routes>
+        </div>
+      </UserContext.Provider>
     </Router>
   );
 }

@@ -9,6 +9,7 @@ class RegistrationPage extends Component {
     password: "",
     role: "SENDER",
     errors: {},
+    isRegistered: false,
   };
 
   onHandleChange = (e) => {
@@ -26,7 +27,11 @@ class RegistrationPage extends Component {
     }
 
     if (password === "") {
-      this.setState({ errors: { password: "Password is a required field." } });
+      this.setState({
+        errors: {
+          password: "Please insert password of at least 6 characters long.",
+        },
+      });
       return;
     }
 
@@ -40,6 +45,7 @@ class RegistrationPage extends Component {
       .post("http://localhost:7312/api/gateway/users", newUser)
       .then((response) => {
         console.log("New user created:", response.data);
+        this.setState({ isRegistered: true });
       })
       .catch((error) => {
         console.error("Error creating user:", error);
@@ -47,39 +53,43 @@ class RegistrationPage extends Component {
   };
 
   render() {
-    const { email, password, errors } = this.state;
+    const { email, password, errors, isRegistered } = this.state;
     return (
       <div className="container card mb-1">
         <div className="card-header bg-dark bg-body-tertiary border border-green d-flex justify-content-center ">
           Registration Form
         </div>
         <div className="card-body ">
-          <form onSubmit={this.onHandleSubmit}>
-            <FormInputOrganism
-              label="Email"
-              name="email"
-              type="email"
-              placeholder="Please insert your email address"
-              value={email}
-              onChange={this.onHandleChange}
-              error={errors.email}
-            />
-            <FormInputOrganism
-              label="Password"
-              name="password"
-              type="password"
-              placeholder="Please create password, min 6 characters long"
-              value={password}
-              onChange={this.onHandleChange}
-              error={errors.password}
-            />
-            <ButtonAtom
-              type="submit"
-              text="Register"
-              className="btn btn-outline-success"
-              className2="btn btn-outline-success"
-            />
-          </form>
+          {isRegistered ? (
+            <div className="alert alert-success">Registered successfully!</div>
+          ) : (
+            <form onSubmit={this.onHandleSubmit}>
+              <FormInputOrganism
+                label="Email"
+                name="email"
+                type="email"
+                placeholder="Please insert your email address"
+                value={email}
+                onChange={this.onHandleChange}
+                error={errors.email}
+              />
+              <FormInputOrganism
+                label="Password"
+                name="password"
+                type="password"
+                placeholder="Please create password, min 6 characters long"
+                value={password}
+                onChange={this.onHandleChange}
+                error={errors.password}
+              />
+              <ButtonAtom
+                type="submit"
+                text="Register"
+                className="btn btn-outline-success"
+                className2="btn btn-outline-success"
+              />
+            </form>
+          )}
         </div>
       </div>
     );
