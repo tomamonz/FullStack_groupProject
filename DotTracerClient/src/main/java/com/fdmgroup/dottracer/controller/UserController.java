@@ -31,6 +31,7 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<?> addUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+		
 		if (bindingResult.hasErrors()) {
 			Map<String, String> errors = new HashMap<>();
 

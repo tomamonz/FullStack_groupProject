@@ -78,15 +78,11 @@ public class ParcelController {
 	public ResponseEntity<?> findBySenderId(@PathVariable("senderId") String senderId) {
 		List<Parcel> parcels = this.parcelService.findAllBySenderId(senderId);
 
-		if (parcels.isEmpty()) {
-			return new ResponseEntity<>("There is no parcel for this user Id", HttpStatus.NOT_FOUND);
-		}
-
 		return new ResponseEntity<>(parcels, HttpStatus.OK);
 	}
 
 	@PutMapping
-	public ResponseEntity<?> updateParcel(Parcel parcel) {
+	public ResponseEntity<?> updateParcel(@Valid @RequestBody Parcel parcel) {
 		return new ResponseEntity<>(this.parcelService.updateParcel(parcel), HttpStatus.OK);
 	}
 
