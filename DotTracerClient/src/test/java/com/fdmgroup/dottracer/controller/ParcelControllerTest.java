@@ -108,8 +108,13 @@ class ParcelControllerTest {
 		ResultActions response = mockMvc.perform(get("/api/v1/parcels"));
 
 		// assert
-		response.andExpect(status().isOk()).andExpect(jsonPath("$.*", isA(ArrayList.class)))
-				.andExpect(jsonPath("$.*", hasSize(2))).andReturn();
+
+		/// @formatter:off
+		response.andExpect(status().isOk())
+				.andExpect(jsonPath("$.*", isA(ArrayList.class)))
+				.andExpect(jsonPath("$.*", hasSize(2)))
+				.andReturn();
+		// @formatter:on
 	}
 
 	@Test
@@ -130,6 +135,30 @@ class ParcelControllerTest {
 		// @formatter:on
 
 		verify(mockParcelService).findByParcelNumber("123");
+	}
+
+	@Test
+	@DisplayName("Find all by senderId")
+	void arrangeParcels_actFindAllBySenderId_assertReturnParcelsWithGivenSenderId() throws Exception {
+
+		// arrange
+		Parcel parcel2 = Parcel.builder().id(123L).senderId("abc123").status(Status.SUBMITTED).build();
+		List<Parcel> parcels = List.of(parcel, parcel2);
+		BDDMockito.given(mockParcelService.findAllBySenderId("abc123")).willReturn(parcels);
+
+		// act
+		ResultActions response = mockMvc.perform(get("/api/v1/parcels/parcels/{senderId}", "abc123"));
+
+		// assert
+
+		/// @formatter:off
+		response.andExpect(status().isOk())
+		.andExpect(jsonPath("$.*", isA(ArrayList.class)))
+		.andExpect(jsonPath("$.*", hasSize(2)))
+		.andReturn();
+		// @formatter:on
+
+		verify(mockParcelService).findAllBySenderId("abc123");
 	}
 
 	@Test
@@ -205,11 +234,7 @@ class ParcelControllerTest {
 
 		// assert
 
-		/// @formatter:off
-		response.andExpect(status()
-				.isOk());
-				//.andExpect(jsonPath("$.senderId", is("abc123")));
-		// @formatter:on
+		response.andExpect(status().isOk());
 
 		verify(mockParcelService).updateParcel(ArgumentMatchers.any(Parcel.class));
 	}

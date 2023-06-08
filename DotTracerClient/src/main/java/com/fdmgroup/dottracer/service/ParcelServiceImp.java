@@ -1,5 +1,6 @@
 package com.fdmgroup.dottracer.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -44,6 +45,11 @@ public class ParcelServiceImp implements ParcelService {
 	@Override
 	public void removeParcelById(Long id) {
 		parcelRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Parcel> findAllBySenderId(String senderId) {
+		return this.parcelRepository.findAllBySenderId(senderId);
 	}
 
 }

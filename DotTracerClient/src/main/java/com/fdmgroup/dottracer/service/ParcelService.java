@@ -1,5 +1,6 @@
 package com.fdmgroup.dottracer.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.fdmgroup.dottracer.model.Parcel;
@@ -16,4 +17,6 @@ public interface ParcelService {
 	public Parcel updateParcel(Parcel parcel);
 
 	public void removeParcelById(Long id);
+
+	public List<Parcel> findAllBySenderId(String senderId);
 }
