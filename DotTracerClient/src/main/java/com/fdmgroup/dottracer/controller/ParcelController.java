@@ -82,7 +82,7 @@ public class ParcelController {
 	}
 
 	@PutMapping
-	public ResponseEntity<?> updateParcel(Parcel parcel) {
+	public ResponseEntity<?> updateParcel(@Valid @RequestBody Parcel parcel) {
 		return new ResponseEntity<>(this.parcelService.updateParcel(parcel), HttpStatus.OK);
 	}
 
