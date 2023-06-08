@@ -116,4 +116,39 @@ class UserControllerTests {
 		verify(mockUserServiceImp).findByEmailAndPassword("sth@msn.com", "123456");
 	}
 
+	@Test
+	@DisplayName("Find User by email")
+	void arrangeUser_actFindUserByEmail_assertReturnEmployeeWithGivenEmail() throws Exception {
+		// arrange
+		BDDMockito.given(mockUserServiceImp.findByEmail("jd@msn.com")).willReturn(Optional.ofNullable(user));
+
+		// act
+		ResultActions response = mockMvc.perform(get("/api/v1/users/{email}", "jd@msn.com"));
+
+		// assert
+		/// @formatter:off
+		response.andExpect(status().isOk())
+				.andExpect(jsonPath("$.email", is("jd@msn.com")))
+				.andExpect(jsonPath("$.password", is("abc1234")));
+		// @formatter:on
+		verify(mockUserServiceImp).findByEmail("jd@msn.com");
+	}
+
+	@Test
+	@DisplayName("Find User with invalid email")
+	void arrangeInvalidUser_actFindUserByEmail_assertReturnNull() throws Exception {
+		// arrange
+		BDDMockito.given(mockUserServiceImp.findByEmail("sth@msn.com")).willReturn(Optional.empty());
+
+		// act
+		ResultActions response = mockMvc.perform(get("/api/v1/users/{email}", "sth@msn.com"));
+
+		// assert
+		/// @formatter:off
+		response.andExpect(status().isNotFound());
+				
+		// @formatter:on
+		verify(mockUserServiceImp).findByEmail("sth@msn.com");
+	}
+
 }

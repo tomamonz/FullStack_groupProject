@@ -42,6 +42,20 @@ class UserRepositoryTests {
 		assertThat(actual).isEqualTo(Optional.ofNullable(user));
 	}
 
+	@Test
+	@DisplayName("Find Employee By email")
+	void arrangeUser_actFindByEmail_assertValidateReturnedEmployee() {
+		// arrange
+		userRepository.save(user);
+
+		// act
+		Optional<User> actual = userRepository.findByEmail("jd@msn.com");
+
+		// assert
+		assertThat(actual.get().getPassword()).isEqualTo("abc1234");
+		assertThat(actual).isEqualTo(Optional.ofNullable(user));
+	}
+
 	@AfterEach
 	public void tearDown() {
 		userRepository.deleteAll();

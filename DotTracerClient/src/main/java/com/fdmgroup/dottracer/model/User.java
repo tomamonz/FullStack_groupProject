@@ -2,6 +2,7 @@ package com.fdmgroup.dottracer.model;
 
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,6 +34,7 @@ public class User {
 	private String userId;
 
 	@NotBlank(message = "Email is required.")
+	@Column(unique = true)
 	private String email;
 
 	@Enumerated(EnumType.STRING)
