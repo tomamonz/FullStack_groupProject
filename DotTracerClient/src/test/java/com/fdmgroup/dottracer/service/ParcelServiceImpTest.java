@@ -34,8 +34,7 @@ class ParcelServiceImpTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		parcel = Parcel.builder().parcelNumber("12345").senderId(UUID.randomUUID().toString().replaceAll("-", ""))
-				.status(Status.SUBMITTED).build();
+		parcel = Parcel.builder().parcelNumber("12345").senderId("123").status(Status.SUBMITTED).build();
 	}
 
 	@Test
@@ -85,11 +84,28 @@ class ParcelServiceImpTest {
 	}
 
 	@Test
+	@DisplayName("find all by senderId")
+	void arrangeParcels_actFindAllBySenderId_assertParcelsReturned() {
+
+		// arrange
+		Parcel parcel2 = Parcel.builder().parcelNumber("12346").senderId("123").status(Status.SUBMITTED).build();
+		List<Parcel> parcels = List.of(parcel, parcel2);
+		when(mockParcelRepository.findAllBySenderId("123")).thenReturn(parcels);
+
+		// act
+		List<Parcel> actual = parcelService.findAllBySenderId("123");
+
+		// assert
+		assertThat(actual).isEqualTo(parcels);
+		verify(mockParcelRepository, times(1)).findAllBySenderId("123");
+	}
+
+	@Test
 	@DisplayName("find all")
 	void arrangeParcels_actFindAll_assertParcelsFound() {
 
 		// arrange
-		Parcel parcel2 = Parcel.builder().parcelNumber("12345")
+		Parcel parcel2 = Parcel.builder().parcelNumber("12346")
 				.senderId(UUID.randomUUID().toString().replaceAll("-", "")).status(Status.SUBMITTED).build();
 		List<Parcel> parcels = List.of(parcel, parcel2);
 		when(mockParcelRepository.findAll()).thenReturn(parcels);

@@ -1,6 +1,7 @@
 package com.fdmgroup.dottracer.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -71,6 +72,13 @@ public class ParcelController {
 		}
 
 		return new ResponseEntity<>(parcel.get(), HttpStatus.OK);
+	}
+
+	@GetMapping("/parcels/{senderId}")
+	public ResponseEntity<?> findBySenderId(@PathVariable("senderId") String senderId) {
+		List<Parcel> parcels = this.parcelService.findAllBySenderId(senderId);
+
+		return new ResponseEntity<>(parcels, HttpStatus.OK);
 	}
 
 	@PutMapping
