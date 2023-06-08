@@ -1,4 +1,4 @@
-package com.fdmgroup.dottracer.controller1;
+package com.fdmgroup.dottracer.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
