@@ -40,6 +40,7 @@ public class UserController {
 
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 		}
+
 		return new ResponseEntity<>(this.userService.addUser(user), HttpStatus.CREATED);
 	}
 
@@ -47,6 +48,17 @@ public class UserController {
 	public ResponseEntity<?> findByEmailAndPassword(@PathVariable("email") String email,
 			@PathVariable("password") String password) {
 		Optional<User> user = this.userService.findByEmailAndPassword(email, password);
+
+		if (user.isEmpty()) {
+			return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(user.get(), HttpStatus.OK);
+	}
+
+	@GetMapping("/{email}")
+	public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
+		Optional<User> user = this.userService.findByEmail(email);
 
 		if (user.isEmpty()) {
 			return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
