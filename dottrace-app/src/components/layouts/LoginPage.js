@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import UserContext from "../UserObject";
 import { useNavigate } from "react-router-dom";
 
-import FormInputOrganism from "../organisms/FormInputOrganism";
+import FormInputMolecule from "../molecules/FormInputMolecule";
 import ButtonAtom from "../atoms/SearchButtonAtom";
 import axios from "axios";
 
@@ -24,7 +24,6 @@ const LoginPage = () => {
   const onHandleSubmit = (e) => {
     e.preventDefault();
 
-    // replace '/your_api_endpoint' with your actual API endpoint
     axios
       .get(`http://localhost:7312/api/gateway/users/${email}/${password}`)
       .then((response) => {
@@ -47,7 +46,7 @@ const LoginPage = () => {
       </div>
       <div className="card-body">
         <form onSubmit={onHandleSubmit}>
-          <FormInputOrganism
+          <FormInputMolecule
             label="Email"
             name="email"
             type="email"
@@ -55,7 +54,7 @@ const LoginPage = () => {
             value={email}
             onChange={onHandleChange}
           />
-          <FormInputOrganism
+          <FormInputMolecule
             label="Password"
             name="password"
             type="password"

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import FormInputOrganism from "../organisms/FormInputOrganism";
+import FormInputMolecule from "../molecules/FormInputMolecule";
 import ButtonAtom from "../atoms/SearchButtonAtom";
 import axios from "axios";
 
@@ -10,6 +10,7 @@ class RegistrationPage extends Component {
     role: "SENDER",
     errors: {},
     isRegistered: false,
+    userExists: false,
   };
 
   onHandleChange = (e) => {
@@ -42,18 +43,35 @@ class RegistrationPage extends Component {
     };
 
     axios
-      .post("http://localhost:7312/api/gateway/users", newUser)
+      .get(`http://localhost:7312/api/gateway/users/${email}`)
       .then((response) => {
-        console.log("New user created:", response.data);
-        this.setState({ isRegistered: true });
+        if (response.status === 200) {
+          console.log("User already exists");
+          this.setState({ userExists: true });
+        }
       })
       .catch((error) => {
-        console.error("Error creating user:", error);
+        if (
+          error.response &&
+          (error.response.status === 404 || error.response.status === 500)
+        ) {
+          axios
+            .post("http://localhost:7312/api/gateway/users", newUser)
+            .then((response) => {
+              console.log("New user created:", response.data);
+              this.setState({ isRegistered: true });
+            })
+            .catch((error) => {
+              console.error("Error creating user:", error);
+            });
+        } else {
+          console.error("Error checking user:", error);
+        }
       });
   };
 
   render() {
-    const { email, password, errors, isRegistered } = this.state;
+    const { email, password, errors, isRegistered, userExists } = this.state;
     return (
       <div className="container card mb-1">
         <div className="card-header bg-dark bg-body-tertiary border border-green d-flex justify-content-center ">
@@ -64,7 +82,7 @@ class RegistrationPage extends Component {
             <div className="alert alert-success">Registered successfully!</div>
           ) : (
             <form onSubmit={this.onHandleSubmit}>
-              <FormInputOrganism
+              <FormInputMolecule
                 label="Email"
                 name="email"
                 type="email"
@@ -73,7 +91,7 @@ class RegistrationPage extends Component {
                 onChange={this.onHandleChange}
                 error={errors.email}
               />
-              <FormInputOrganism
+              <FormInputMolecule
                 label="Password"
                 name="password"
                 type="password"
@@ -82,6 +100,11 @@ class RegistrationPage extends Component {
                 onChange={this.onHandleChange}
                 error={errors.password}
               />
+              {userExists && (
+                <div className="alert alert-danger">
+                  User already exists. Please choose a different email.
+                </div>
+              )}
               <ButtonAtom
                 type="submit"
                 text="Register"

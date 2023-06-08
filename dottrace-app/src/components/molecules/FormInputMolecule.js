@@ -10,6 +10,7 @@ const FormInputMolecule = ({
   placeholder,
   onChange,
   error,
+  type,
 }) => {
   return (
     <div className="mb-3 ">
@@ -21,6 +22,7 @@ const FormInputMolecule = ({
         placeholder={placeholder}
         error={error}
         id={name}
+        type={type}
       />
       <FormErrorAtom error={error} />
     </div>
