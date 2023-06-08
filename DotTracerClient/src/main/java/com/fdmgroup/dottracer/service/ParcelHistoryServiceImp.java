@@ -19,4 +19,9 @@ public class ParcelHistoryServiceImp implements ParcelHistoryService {
 		return parcelHistoryRepository.save(parcelHistory);
 	}
 
+	@Override
+	public Iterable<ParcelHistory> findAllByParcelNumber(String parcelNumber) {
+		return parcelHistoryRepository.findAllByParcelNumber(parcelNumber);
+	}
+
 }
