@@ -55,4 +55,15 @@ public class UserController {
 		return new ResponseEntity<>(user.get(), HttpStatus.OK);
 	}
 
+	@GetMapping("/{email}")
+	public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
+		Optional<User> user = this.userService.findByEmail(email);
+
+		if (user.isEmpty()) {
+			return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(user.get(), HttpStatus.OK);
+	}
+
 }

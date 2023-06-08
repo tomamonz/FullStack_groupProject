@@ -17,4 +17,7 @@ public interface DotTraceUserRequest {
     Optional<Object> findUserByEmailAndPassword(@PathVariable("email") String email,
             @PathVariable("password") String password);
 
+    @GetMapping("/{email}")
+    Optional<Object> findUserByEmail(@PathVariable("email") String email);
+
 }

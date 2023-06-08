@@ -36,4 +36,13 @@ public class DotTraceUserController {
         return new ResponseEntity<>(this.dotTraceUserRequest.addUser(object), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{email}")
+    public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
+        Object user = this.dotTraceUserRequest.findUserByEmail(email);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

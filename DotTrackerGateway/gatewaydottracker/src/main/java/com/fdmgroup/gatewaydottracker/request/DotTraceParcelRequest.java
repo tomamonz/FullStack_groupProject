@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @FeignClient(value = "dottracer", path = "/api/v1/parcels")
-
 public interface DotTraceParcelRequest {
 
     @GetMapping("/number/{parcelNumber}")

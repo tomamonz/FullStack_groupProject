@@ -25,4 +25,10 @@ public class UserServiceImp implements UserService {
 		return userRepository.save(user);
 	}
 
+	@Override
+	public Optional<User> findByEmail(String email) {
+		return userRepository.findByEmail(email);
+
+	}
+
 }
