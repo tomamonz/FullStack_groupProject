@@ -49,7 +49,6 @@ public class ParcelServiceImp implements ParcelService {
 
 	@Override
 	public List<Parcel> findAllBySenderId(String senderId) {
-
 		return this.parcelRepository.findAllBySenderId(senderId);
 	}
 

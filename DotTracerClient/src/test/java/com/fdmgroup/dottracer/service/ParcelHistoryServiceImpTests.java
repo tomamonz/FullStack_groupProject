@@ -59,4 +59,5 @@ class ParcelHistoryServiceImpTests {
 		assertThat(actual).isEqualTo(history);
 		verify(mockParcelHistoryRepository, times(1)).findAllByParcelNumber("123");
 	}
+
 }

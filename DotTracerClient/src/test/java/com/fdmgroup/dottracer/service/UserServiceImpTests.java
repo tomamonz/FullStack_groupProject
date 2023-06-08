@@ -62,4 +62,19 @@ class UserServiceImpTests {
 		
 	}
 
+	@Test
+	@DisplayName("Find User by email")
+	void arrangeUser_actFindByEmail_assertUserWithGivenEmail() {
+		//arrange
+		when(mockUserRepository.findByEmail("jd@msn.com")).thenReturn(Optional.ofNullable(user));
+		
+		//act
+		Optional<User> actual = userServiceImp.findByEmail("jd@msn.com");
+		
+		//assert
+		assertThat(actual).isEqualTo(Optional.ofNullable(user));
+		verify(mockUserRepository).findByEmail("jd@msn.com");
+		
+	}
+
 }

@@ -7,6 +7,6 @@ import com.fdmgroup.dottracer.model.ParcelHistory;
 
 public interface ParcelHistoryRepository extends CrudRepository<ParcelHistory, Long> {
 
-    public Iterable<ParcelHistory> findAllByParcelNumber(@Param("parcelNumber") String parcelNumber);
+	public Iterable<ParcelHistory> findAllByParcelNumber(@Param("parcelNumber") String parcelNumber);
 
 }
