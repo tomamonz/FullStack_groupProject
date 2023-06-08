@@ -57,7 +57,7 @@ public class UserController {
 		if (user.isEmpty()) {
 			return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
 		}
-		log.trace("Entering findByEmailAndPassword method");
+		log.trace("Exiting findByEmailAndPassword method");
 		return new ResponseEntity<>(user.get(), HttpStatus.OK);
 	}
 
@@ -69,7 +69,7 @@ public class UserController {
 		if (user.isEmpty()) {
 			return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
 		}
-		log.trace("Entering findByEmail method");
+		log.trace("Exiting findByEmail method");
 		return new ResponseEntity<>(user.get(), HttpStatus.OK);
 	}
 
