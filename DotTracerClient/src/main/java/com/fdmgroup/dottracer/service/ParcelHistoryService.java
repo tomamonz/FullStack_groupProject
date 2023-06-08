@@ -6,4 +6,6 @@ public interface ParcelHistoryService {
 
 	public ParcelHistory addParcelHistory(ParcelHistory parcelHistory);
 
+	public Iterable<ParcelHistory> findAllByParcelNumber(String parcelNumber);
+
 }
