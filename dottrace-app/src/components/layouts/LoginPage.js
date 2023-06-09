@@ -27,13 +27,11 @@ const LoginPage = () => {
     axios
       .get(`http://localhost:7312/api/gateway/users/${email}/${password}`)
       .then((response) => {
-        // Handle response
         console.log(response);
         setUser(response.data);
-        navigate("/sendparcel/addpackage"); // navigate after login
+        navigate("/sendparcel/addpackage");
       })
       .catch((error) => {
-        // Handle error
         console.log(error);
         setErrorMessage("Invalid email or password");
       });

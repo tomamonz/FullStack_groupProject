@@ -9,7 +9,7 @@ const Header = ({ brand }) => {
         classContainerName="container-fluid"
         LinkText={brand}
         path="/"
-        LinkClassName="navbar-brand"
+        LinkClassName="img-fluid"
         buttonText=""
         buttonClassName="navbar-toggler"
         navButtonType="button"
@@ -25,11 +25,6 @@ const Header = ({ brand }) => {
         text3="Send Parcel"
         icon3="fa fa-paper-plane"
         path3="/sendparcel"
-        // buttonType="submit"
-        // nameClass="btn btn-outline-success"
-        // type="search"
-        // placeholder="Search"
-        // text="Search"
       />
     </React.Fragment>
   );

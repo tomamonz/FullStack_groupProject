@@ -11,6 +11,7 @@ import AdminPage from "./components/layouts/AdminPage";
 import UserContext from "./components/UserObject";
 import React, { useState } from "react";
 import UpdatePackagePage from "./components/layouts/UpdatePackagePage";
+import logo from "./logoo.png";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -19,7 +20,7 @@ function App() {
     <Router>
       <UserContext.Provider value={{ user, setUser, parcel, setParcel }}>
         <div className="App">
-          <Header brand="Dot Trace" className="HEADER" />
+          <Header brand={logo} className="HEADER" />
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route exact path="/register" element={<RegistrationPage />} />
